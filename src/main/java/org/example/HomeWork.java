@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -24,11 +25,23 @@ public class HomeWork {
      * @param list односвязный список
      * @param pred условие
      * @param <T>  - тип хранимых значений в списке
-     * @return количество узлов от 0 до N, где N позиция на которой первый раз условие вернуло fals
+     * @return количество узлов от 0 до N, где N позиция на которой первый раз условие вернуло false
      */
     public <T> int partitionBy(Node<T> list, Predicate<T> pred) {
-        //TODO реализовать метод
-        return 0;
+        Objects.requireNonNull(list, "list is null");
+        Objects.requireNonNull(pred, "pred is null");
+
+        Node<T> current = list;
+        int counter = 0;
+        while (current != null) {
+            if (pred.test(current.getValue())) {
+                counter++;
+            } else {
+                break;
+            }
+            current = current.getNext();
+        }
+        return counter;
     }
 
     /**
@@ -41,6 +54,22 @@ public class HomeWork {
      * @return сам элемент
      */
     public <T> T findNthElement(Node<T> list, int n) {
-        return null;
+        Objects.requireNonNull(list, "list не должен быть null");
+        if(n < 0){
+            throw new IllegalArgumentException("n должен быть больше 0");
+        }
+
+        int index = 0;
+        Node<T> currentNode = list;
+        while (currentNode != null && index < n) {
+            currentNode = currentNode.getNext();
+            index++;
+        }
+
+        if (index < n || currentNode == null) {
+            throw new IndexOutOfBoundsException("Не найден элемент на позиции N");
+        }
+
+        return currentNode.getValue();
     }
 }
